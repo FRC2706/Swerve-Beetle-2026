@@ -2,10 +2,12 @@ package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.Meter;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 // Imports necessary to create SwerveDrive object
 import java.io.File;
+import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj.Filesystem;
 import swervelib.parser.SwerveParser;
 import swervelib.SwerveDrive;
@@ -18,6 +20,8 @@ import edu.wpi.first.math.util.Units;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
+// For driving
+import swervelib.math.SwerveMath;
 
 
 public class SwerveSubsystem extends SubsystemBase{
@@ -58,6 +62,56 @@ public class SwerveSubsystem extends SubsystemBase{
         swerveDrive.setModuleEncoderAutoSynchronize(false, 1); // Turn on to periodcally synchronize absolute encoders and motor encoders during periods without movement
     }
 
-    
+   /**
+   * The primary method for controlling the drivebase.  Takes a {@link Translation2d} and a rotation rate, and
+   * calculates and commands module states accordingly.  Can use either open-loop or closed-loop velocity control for
+   * the wheel velocities.  Also has field- and robot-relative modes, which affect how the translation vector is used.
+   *
+   * @param translation   {@link Translation2d} that is the commanded linear velocity of the robot, in meters per
+   *                      second. In robot-relative mode, positive x is torwards the bow (front) and positive y is
+   *                      torwards port (left).  In field-relative mode, positive x is away from the alliance wall
+   *                      (field North) and positive y is torwards the left wall when looking through the driver station
+   *                      glass (field West).
+   * @param rotation      Robot angular rate, in radians per second. CCW positive.  Unaffected by field/robot
+   *                      relativity.
+   * @param fieldRelative Drive mode.  True for field-relative, false for robot-relative.
+   */
+    public void drive(Translation2d translation, double rotation, boolean fieldRelative)
+    {
+        swerveDrive.drive(translation,
+                        rotation,
+                        fieldRelative,
+                        false); // Open loop is disabled since it shouldn't be used most of the time.
+    }
+
+    /**
+     * Resets odometry to the given pose. Gyro angle and module positions do not need to be reset when calling this
+     * method.  However, if either gyro angle or module position is reset, this must be called in order for odometry to
+     * keep working.
+     *
+     * @param initialHolonomicPose The pose to set the odometry to
+     */
+    public void resetOdometry(Pose2d initialHolonomicPose)
+    {
+        swerveDrive.resetOdometry(initialHolonomicPose);
+    }
+
+    /**
+     * Resets the gyro angle to zero and resets odometry to the same position, but facing toward 0.
+     */
+    public void zeroGyro()
+    {
+        swerveDrive.zeroGyro();
+    }
+
+    /**
+     * Gets the current pose (position and rotation) of the robot, as reported by odometry.
+     *
+     * @return The robot's pose
+     */
+    public Pose2d getPose()
+    {
+        return swerveDrive.getPose();
+    }
 
 }
