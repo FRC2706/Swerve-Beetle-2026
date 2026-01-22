@@ -84,6 +84,24 @@ public class SwerveSubsystem extends SubsystemBase{
                         false); // Open loop is disabled since it shouldn't be used most of the time.
     }
 
+    public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier angularRotationX)
+    {
+        return run(() -> {
+            swerveDrive.drive(
+                SwerveMath.scaleTranslation(
+                    new Translation2d(
+                        translationX.getAsDouble() * swerveDrive.getMaximumChassisVelocity(),
+                        translationY.getAsDouble() * swerveDrive.getMaximumChassisVelocity()
+                    ),
+                    0.8
+                ),
+                Math.pow(angularRotationX.getAsDouble(), 3) * swerveDrive.getMaximumChassisAngularVelocity(),
+                true,
+                false
+            );
+        });
+    }
+
     /**
      * Resets odometry to the given pose. Gyro angle and module positions do not need to be reset when calling this
      * method.  However, if either gyro angle or module position is reset, this must be called in order for odometry to
