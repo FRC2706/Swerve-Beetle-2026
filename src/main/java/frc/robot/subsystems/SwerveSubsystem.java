@@ -11,6 +11,7 @@ import java.util.function.DoubleSupplier;
 
 import org.dyn4j.geometry.Rotation;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import swervelib.parser.SwerveParser;
 import swervelib.SwerveDrive;
@@ -39,7 +40,7 @@ public class SwerveSubsystem extends SubsystemBase{
     public SwerveSubsystem(File swerveJsonDirectory){
         
         // Set up starting position depending on alliance for odometry
-        boolean blueAlliance = false;
+        boolean blueAlliance = isRedAlliance();
         Pose2d startingPose;
         if (blueAlliance){
             // Units are in meters
@@ -149,7 +150,6 @@ public class SwerveSubsystem extends SubsystemBase{
 
     /**
      * Gets the heading (yaw) of the robot from the odometry
-     * Used instead of getYaw() due to consistency reasons
      * 
      * @return The robot's heading in Rotation2d
      */
@@ -165,6 +165,22 @@ public class SwerveSubsystem extends SubsystemBase{
     // Forces the drive train to not move by pointing all the swerve modueles to the center of the robot
     public void lockPose(){
         swerveDrive.lockPose();
+    }
+
+    // Check if the current alliance is the red alliance
+    public boolean isRedAlliance(){
+        var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent()){
+            if (alliance.get() == DriverStation.Alliance.Red){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            return false;
+        }
     }
 
 
