@@ -8,13 +8,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 // Imports necessary to create SwerveDrive object
 import java.io.File;
 import java.util.function.DoubleSupplier;
+
+import org.dyn4j.geometry.Rotation;
+
 import edu.wpi.first.wpilibj.Filesystem;
 import swervelib.parser.SwerveParser;
 import swervelib.SwerveDrive;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 
@@ -64,10 +65,11 @@ public class SwerveSubsystem extends SubsystemBase{
         swerveDrive.setModuleEncoderAutoSynchronize(false, 1); // Turn on to periodcally synchronize absolute encoders and motor encoders during periods without movement
     }
 
+    /** Needs to be tested to see if it's necessary
     @Override
     public void periodic(){
         updateOdometry();
-    }
+    }*/
 
    /**
    * The primary method for controlling the drivebase.  Takes a {@link Translation2d} and a rotation rate, and
@@ -146,18 +148,23 @@ public class SwerveSubsystem extends SubsystemBase{
     }
 
     /**
-     * Gets the yaw of the robot from the IMU
+     * Gets the heading (yaw) of the robot from the odometry
+     * Used instead of getYaw() due to consistency reasons
      * 
-     * @return The robot's yaw
+     * @return The robot's heading in Rotation2d
      */
-    public Angle getYaw(){
-        Rotation3d rotation3d = swerveDrive.getGyroRotation3d();
-        return rotation3d.getMeasureZ();
+    public Rotation2d getOdometryHeading(){
+        return swerveDrive.getOdometryHeading();
     }
 
     // Updates the odometry; Should be run periodically
     public void updateOdometry(){
         swerveDrive.updateOdometry();
+    }
+
+    // Forces the drive train to not move by pointing all the swerve modueles to the center of the robot
+    public void lockPose(){
+        swerveDrive.lockPose();
     }
 
 
