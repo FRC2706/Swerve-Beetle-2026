@@ -27,6 +27,19 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 // For driving
 import swervelib.math.SwerveMath;
 
+// Imports for pathplanner
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.commands.PathfindingCommand;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.DriveFeedforwards;
+import com.pathplanner.lib.util.swerve.SwerveSetpoint;
+import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
+
 
 public class SwerveSubsystem extends SubsystemBase{
 
@@ -64,6 +77,36 @@ public class SwerveSubsystem extends SubsystemBase{
         swerveDrive.setCosineCompensator(false); // Turn on to automatically slow or speed up swerve modules that should be close to their desired state in theory
         swerveDrive.setAngularVelocityCompensation(true, true, 0.1); // Tune to compensate for angular skew in movement
         swerveDrive.setModuleEncoderAutoSynchronize(false, 1); // Turn on to periodcally synchronize absolute encoders and motor encoders during periods without movement
+        
+        // Setup PathpPlanner for auto
+        setupPathPlanner();
+    }
+
+    public void setupPathPlanner(){
+        // Load the RobotConfig from the GUI settings. You should probably
+        // store this in your Constants file
+        RobotConfig config;
+        try{
+            config = RobotConfig.fromGUISettings();
+        } catch (Exception e) {
+            // Handle exception as needed
+            e.printStackTrace();
+        }
+
+        // Configure autobuilder
+        /** 
+        AutoBuilder.configure(
+            this::getPose, // Pass method supplying robot pose
+            this::resetOdometry, // Pass method reseting odometry
+            null, // Pass method supplying robot relative chassis
+            null, // Pass method that will drive the robot -- only robot relative chassis speeds
+            new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
+                    new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+                    new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+            ),  
+            config, 
+            this::isRedAlliance, 
+            null);*/
     }
 
     /** Needs to be tested to see if it's necessary
