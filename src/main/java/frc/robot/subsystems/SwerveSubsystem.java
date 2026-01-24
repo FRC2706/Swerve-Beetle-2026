@@ -13,6 +13,8 @@ import swervelib.parser.SwerveParser;
 import swervelib.SwerveDrive;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 
@@ -60,6 +62,11 @@ public class SwerveSubsystem extends SubsystemBase{
         swerveDrive.setCosineCompensator(false); // Turn on to automatically slow or speed up swerve modules that should be close to their desired state in theory
         swerveDrive.setAngularVelocityCompensation(true, true, 0.1); // Tune to compensate for angular skew in movement
         swerveDrive.setModuleEncoderAutoSynchronize(false, 1); // Turn on to periodcally synchronize absolute encoders and motor encoders during periods without movement
+    }
+
+    @Override
+    public void periodic(){
+        updateOdometry();
     }
 
    /**
@@ -120,6 +127,12 @@ public class SwerveSubsystem extends SubsystemBase{
     public void zeroGyro()
     {
         swerveDrive.zeroGyro();
+        //resetOdometry();
+    }
+
+    // Resets the encoders -- should be used to manually reset robot (i.e after autonomous)
+    public void resetDriveEncoders(){
+        swerveDrive.resetDriveEncoders();
     }
 
     /**
@@ -131,5 +144,21 @@ public class SwerveSubsystem extends SubsystemBase{
     {
         return swerveDrive.getPose();
     }
+
+    /**
+     * Gets the yaw of the robot from the IMU
+     * 
+     * @return The robot's yaw
+     */
+    public Angle getYaw(){
+        Rotation3d rotation3d = swerveDrive.getGyroRotation3d();
+        return rotation3d.getMeasureZ();
+    }
+
+    // Updates the odometry; Should be run periodically
+    public void updateOdometry(){
+        swerveDrive.updateOdometry();
+    }
+
 
 }
