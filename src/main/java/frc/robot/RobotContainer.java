@@ -16,6 +16,8 @@ import frc.robot.commands.SwerveDriveCommand;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.XboxController;
 import java.io.File;
+import frc.robot.subsystems.PhotonVisionSubsystem;
+import frc.robot.commands.AlignToTargetCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -28,6 +30,7 @@ public class RobotContainer {
 
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
+  private final PhotonVisionSubsystem m_photonVision = new PhotonVisionSubsystem("photoncamera"); // name from PhotonVision/config
 
 
   
@@ -47,8 +50,10 @@ public class RobotContainer {
           () -> -m_driverController.getLeftX(), // Left/right
           () -> -m_driverController.getRightX())
   );
-  
 
+     // TODO: find button to align to target to deafult a
+     m_driverController.a().whileTrue(new AlignToTargetCommand(m_swerveSubsystem, m_photonVision));
+  
     configureBindings();
   }
 

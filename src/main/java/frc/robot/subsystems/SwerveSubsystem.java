@@ -78,13 +78,11 @@ public class SwerveSubsystem extends SubsystemBase{
         swerveDrive.setAngularVelocityCompensation(true, true, 0.1); // Tune to compensate for angular skew in movement
         swerveDrive.setModuleEncoderAutoSynchronize(false, 1); // Turn on to periodcally synchronize absolute encoders and motor encoders during periods without movement
         
-        // Setup PathpPlanner for auto
         setupPathPlanner();
     }
 
     public void setupPathPlanner(){
-        // Load the RobotConfig from the GUI settings. You should probably
-        // store this in your Constants file
+        // TODO: PATH PLANNER FILE SETUP
         RobotConfig config;
         try{
             config = RobotConfig.fromGUISettings();
@@ -93,7 +91,7 @@ public class SwerveSubsystem extends SubsystemBase{
             e.printStackTrace();
         }
 
-        // Configure autobuilder
+    // TODO: AUTO TEAM BUILDER SETUP
         /** 
         AutoBuilder.configure(
             this::getPose, // Pass method supplying robot pose
@@ -109,11 +107,10 @@ public class SwerveSubsystem extends SubsystemBase{
             null);*/
     }
 
-    /** Needs to be tested to see if it's necessary
     @Override
     public void periodic(){
         updateOdometry();
-    }*/
+    }
 
    /**
    * The primary method for controlling the drivebase.  Takes a {@link Translation2d} and a rotation rate, and
@@ -224,6 +221,21 @@ public class SwerveSubsystem extends SubsystemBase{
         else{
             return false;
         }
+    }
+
+    /**
+     * Return the swerve drive's maximum chassis angular velocity (rad/s).
+     * Delegates to the underlying swervelib SwerveDrive instance.
+     */
+    public double getMaximumChassisAngularVelocity() {
+        return swerveDrive.getMaximumChassisAngularVelocity();
+    }
+
+    /**
+     * (Optional helper) Return the swerve drive's maximum chassis linear velocity (m/s).
+     */
+    public double getMaximumChassisVelocity() {
+        return swerveDrive.getMaximumChassisVelocity();
     }
 
 
