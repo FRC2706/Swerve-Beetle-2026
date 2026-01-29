@@ -9,6 +9,8 @@ import java.util.Optional;
 public class PhotonVisionSubsystem extends SubsystemBase {
     private final PhotonCamera camera;
 
+    
+
     public PhotonVisionSubsystem(String cameraName) {
         this.camera = new PhotonCamera(cameraName);
     }
