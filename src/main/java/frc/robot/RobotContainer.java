@@ -26,6 +26,9 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import frc.robot.subsystems.PhotonVisionSubsystem;
 import frc.robot.commands.AlignToTargetCommand;
 
+// Pathplanner testing
+import frc.robot.subsystems.AutoPlans;
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -39,7 +42,8 @@ public class RobotContainer {
   private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
   private final PhotonVisionSubsystem m_photonVision = new PhotonVisionSubsystem("photoncamera"); // name from PhotonVision/config
 
-  
+  // Pathplanner testing
+  private final AutoPlans m_autoPlans = new AutoPlans();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -94,6 +98,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    return m_autoPlans.getAutonomousCommand(0);
   }
 }
