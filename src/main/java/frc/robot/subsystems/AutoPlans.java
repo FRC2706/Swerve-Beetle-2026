@@ -30,10 +30,11 @@ public class AutoPlans extends SubsystemBase {
     public Command getAutonomousCommand(int commandIndex){
         switch(commandIndex){
             default:
-                return none
+                return null;
             case 0:
-                
+                return test;
             case 1:
+                return otherTest;
         }
     }
     
