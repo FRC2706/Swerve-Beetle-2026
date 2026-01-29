@@ -19,12 +19,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
-
-// Imports necessary to create telemetry
-import swervelib.telemetry.SwerveDriveTelemetry;
-import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
-
-// For driving
 import swervelib.math.SwerveMath;
 
 // Imports for pathplanner
@@ -39,6 +33,9 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.DriveFeedforwards;
 import com.pathplanner.lib.util.swerve.SwerveSetpoint;
 import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
+import swervelib.telemetry.SwerveDriveTelemetry;
+import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
 
 public class SwerveSubsystem extends SubsystemBase{
@@ -55,6 +52,7 @@ public class SwerveSubsystem extends SubsystemBase{
         // Set up starting position depending on alliance for odometry
         boolean blueAlliance = isRedAlliance();
         Pose2d startingPose;
+        // TODO: Set up different starting positions
         if (blueAlliance){
             // Units are in meters
             startingPose =  new Pose2d(new Translation2d(1, 4), Rotation2d.fromDegrees(0));
@@ -84,27 +82,27 @@ public class SwerveSubsystem extends SubsystemBase{
     public void setupPathPlanner(){
         // TODO: PATH PLANNER FILE SETUP
         RobotConfig config;
+
         try{
             config = RobotConfig.fromGUISettings();
-        } catch (Exception e) {
+            AutoBuilder.configure(
+                this::getPose, // Pass method supplying robot pose
+                this::resetOdometry, // Pass method reseting odometry
+                this::getRobotVelocity, // Pass method supplying robot relative chassis
+                (speedsRobotRelative, moduleFeedForwards) -> {this.drive(speedsRobotRelative);}, // Pass method that will drive the robot -- only robot relative chassis speeds
+                new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
+                        new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+                        new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+                ),  
+                config, // Pass on the config
+                () -> isRedAlliance(), // Check which alliance the robot is on
+                this // Reference this subsystem
+            );
+        } catch (Exception e) 
+        {
             // Handle exception as needed
             e.printStackTrace();
         }
-
-    // TODO: AUTO TEAM BUILDER SETUP
-        /** 
-        AutoBuilder.configure(
-            this::getPose, // Pass method supplying robot pose
-            this::resetOdometry, // Pass method reseting odometry
-            null, // Pass method supplying robot relative chassis
-            null, // Pass method that will drive the robot -- only robot relative chassis speeds
-            new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
-                    new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-                    new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
-            ),  
-            config, 
-            this::isRedAlliance, 
-            null);*/
     }
 
     @Override
@@ -132,6 +130,11 @@ public class SwerveSubsystem extends SubsystemBase{
                         rotation,
                         fieldRelative,
                         false); // Open loop is disabled since it shouldn't be used most of the time.
+    }
+
+    public void drive(ChassisSpeeds speeds)
+    {
+        swerveDrive.drive(speeds);
     }
 
     public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier angularRotationX)
@@ -237,6 +240,42 @@ public class SwerveSubsystem extends SubsystemBase{
     public double getMaximumChassisVelocity() {
         return swerveDrive.getMaximumChassisVelocity();
     }
-
+    
+    //Autonmous Path Following Commands
+    public Command getAutounomousCommand(String pathName){
+        return new PathPlannerAuto(pathName);
+    }
+    
+    
+    public Command driveToPose(Pose2d pose)
+  {
+    // Create the constraints to use while pathfinding  
+    PathConstraints constraints = new PathConstraints(
+        swerveDrive.getMaximumChassisVelocity(), 4.0,
+        swerveDrive.getMaximumChassisAngularVelocity(), Units.degreesToRadians(720));
+  // Since AutoBuilder is configured, we can use it to build pathfinding commands
+    return AutoBuilder.pathfindToPose(
+        pose,
+        constraints,
+        edu.wpi.first.units.Units.MetersPerSecond.of(0) // Goal end velocity in meters/sec
+                                     );
+  }
+  // public Command driveForward()
+  public Command driveForward(){
+    return driveToPose(
+        new Pose2d(
+            getPose().getTranslation().plus(new Translation2d(1.0, 0.0)), // Drive forward 1 meter
+            getPose().getRotation()
+        )
+    );
+  }
+    
+    /**
+     * Return robot relative velocity
+     */
+    public ChassisSpeeds getRobotVelocity()
+    {
+        return swerveDrive.getRobotVelocity();
+    }
 
 }
