@@ -5,7 +5,6 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -22,6 +21,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.io.File;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.FollowPathCommand;
+import choreo.auto.AutoChooser;
+import choreo.auto.AutoFactory;
 
 import frc.robot.subsystems.PhotonVisionSubsystem;
 import frc.robot.commands.AlignToTargetCommand;
@@ -44,6 +46,8 @@ public class RobotContainer {
 
   // Pathplanner testing
   private final AutoPlans m_autoPlans = new AutoPlans();
+  private final SendableChooser<Command> autoChooser;
+  
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -63,9 +67,13 @@ public class RobotContainer {
 
      // TODO: find button to align to target to deafult a
      m_driverController.a().whileTrue(new AlignToTargetCommand(m_swerveSubsystem, m_photonVision));
+
+
+    autoChooser = AutoBuilder.buildAutoChooser("Tests");
+    SmartDashboard.putData("Auto Mode", autoChooser);
+
   
     configureBindings();
-
 
   }
 
