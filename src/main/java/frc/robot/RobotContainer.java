@@ -69,7 +69,7 @@ public class RobotContainer {
      m_driverController.a().whileTrue(new AlignToTargetCommand(m_swerveSubsystem, m_photonVision));
 
 
-    autoChooser = AutoBuilder.buildAutoChooser("Tests");
+    autoChooser = AutoBuilder.buildAutoChooser("Drive Forward Auto");
     SmartDashboard.putData("Auto Mode", autoChooser);
 
   
