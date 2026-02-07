@@ -8,35 +8,42 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.771069900142653,
-        "y": 5.089500713266761
+        "x": 3.3142112414514187,
+        "y": 3.564836094730305
       },
-      "isLocked": false,
+      "isLocked": true,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.114921540656205,
-        "y": 5.956390870185448
+        "x": 0.4744444444430487,
+        "y": 0.6439333333379944
       },
       "prevControl": {
-        "x": 1.852425106990014,
-        "y": 5.503537803138374
+        "x": 0.2891171615021605,
+        "y": 0.4061583762087993
       },
       "nextControl": null,
-      "isLocked": false,
+      "isLocked": true,
       "linkedName": null
     }
   ],
   "rotationTargets": [
     {
       "waypointRelativePos": 0.5,
-      "rotationDegrees": -131.1570653001228
+      "rotationDegrees": -111.54440211858417
     }
   ],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Deploy Ground Intake",
+      "waypointRelativePos": 0.5679856115107943,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
