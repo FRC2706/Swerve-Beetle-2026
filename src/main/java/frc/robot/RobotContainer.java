@@ -66,7 +66,7 @@ public class RobotContainer {
   );
 
      // TODO: find button to align to target to deafult a
-     m_driverController.a().whileTrue(new AlignToTargetCommand(m_swerveSubsystem, m_photonVision));
+     //m_driverController.a().whileTrue(new AlignToTargetCommand(m_swerveSubsystem, m_photonVision));
 
 
     autoChooser = AutoBuilder.buildAutoChooser("Drive Forward Auto");

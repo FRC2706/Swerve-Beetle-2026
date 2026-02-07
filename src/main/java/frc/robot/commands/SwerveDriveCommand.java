@@ -29,8 +29,13 @@ public class SwerveDriveCommand extends Command{
 
     @Override
     public void execute() {
-        m_SwerveDrive.drive( new Translation2d(m_Vx.getAsDouble(),m_Vy.getAsDouble()),
-            m_Omega.getAsDouble(),
+        m_SwerveDrive.drive( new Translation2d(
+            0.5, 
+            //m_Vx.getAsDouble(),
+            0), 
+            //m_Vy.getAsDouble()),
+            0, 
+            //m_Omega.getAsDouble(),
             false // Assuming field-relative control
         );
     }

@@ -36,7 +36,8 @@ import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-
+ 
+import swervelib.SwerveModule;
 
 public class SwerveSubsystem extends SubsystemBase{
 
@@ -75,7 +76,9 @@ public class SwerveSubsystem extends SubsystemBase{
         swerveDrive.setCosineCompensator(false); // Turn on to automatically slow or speed up swerve modules that should be close to their desired state in theory
         swerveDrive.setAngularVelocityCompensation(true, true, 0.1); // Tune to compensate for angular skew in movement
         swerveDrive.setModuleEncoderAutoSynchronize(false, 1); // Turn on to periodcally synchronize absolute encoders and motor encoders during periods without movement
-        
+        //swerveDrive.pushOffsetsToEncoders();
+        SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
+
         setupPathPlanner();
     }
 
@@ -278,4 +281,5 @@ public class SwerveSubsystem extends SubsystemBase{
         return swerveDrive.getRobotVelocity();
     }
 
+    
 }
