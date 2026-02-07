@@ -7,25 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Scoring Pos"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
+            "pathName": "Scoring Pos 1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Scoring to Depot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Ground Intake"
+            "pathName": "Score 1 to outpost"
           }
         }
       ]
