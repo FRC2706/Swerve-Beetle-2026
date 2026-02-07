@@ -105,7 +105,13 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
+    // Return the command selected on the SendableChooser (built by AutoBuilder).
+    Command selected = autoChooser.getSelected();
+
+    // If the chooser has no selection, fall back to the AutoPlans default.
+    if (selected != null) {
+      return selected;
+    }
     return m_autoPlans.getAutonomousCommand(0);
   }
 }
