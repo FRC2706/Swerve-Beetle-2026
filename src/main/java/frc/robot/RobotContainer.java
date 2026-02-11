@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.commands.SwerveDriveCommand;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -21,6 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.io.File;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.FollowPathCommand;
 import choreo.auto.AutoChooser;
 import choreo.auto.AutoFactory;
@@ -57,6 +59,8 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
 
+    DriverStation.silenceJoystickConnectionWarning(false);
+
     m_swerveSubsystem.setDefaultCommand(
        new SwerveDriveCommand(
           m_swerveSubsystem,
@@ -65,8 +69,7 @@ public class RobotContainer {
           () -> -m_driverController.getRightX())
   );
 
-     // TODO: find button to align to target to deafult a
-     //m_driverController.a().whileTrue(new AlignToTargetCommand(m_swerveSubsystem, m_photonVision));
+    NamedCommands.registerCommand("test", new AlignToTargetCommand(m_swerveSubsystem, m_photonVision));
 
 
     autoChooser = AutoBuilder.buildAutoChooser("Drive Forward Auto");
@@ -95,7 +98,7 @@ public class RobotContainer {
     // cancelling on release.
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
-
+    m_driverController.a().whileTrue(new AlignToTargetCommand(m_swerveSubsystem, m_photonVision));
   
   }
 
