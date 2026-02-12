@@ -36,8 +36,6 @@ import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
- 
-import swervelib.SwerveModule;
 
 public class SwerveSubsystem extends SubsystemBase{
 
