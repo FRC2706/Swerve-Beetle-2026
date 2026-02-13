@@ -7,17 +7,20 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class SwerveDriveCommand extends Command{
-
     private final SwerveSubsystem m_SwerveDrive;
     private final DoubleSupplier m_Vx;
     private final DoubleSupplier m_Vy;
     private final DoubleSupplier m_Omega;
+    private final Double m_DriveDeadband;
+    private final Double m_AngleDeadband;
 
-    public SwerveDriveCommand(SwerveSubsystem swerveDrive, DoubleSupplier Vx, DoubleSupplier Vy, DoubleSupplier omega) {
+    public SwerveDriveCommand(SwerveSubsystem swerveDrive, DoubleSupplier Vx, DoubleSupplier Vy, DoubleSupplier omega, Double driveDeadband, Double angleDeadband) {
         m_SwerveDrive = swerveDrive;
         m_Vx = Vx;
         m_Vy = Vy;
         m_Omega = omega;
+        m_DriveDeadband = driveDeadband;
+        m_AngleDeadband = angleDeadband;
 
         addRequirements(m_SwerveDrive);
     }
@@ -36,17 +39,17 @@ public class SwerveDriveCommand extends Command{
         double m_AdjustedOmega = m_Omega.getAsDouble();
 
         //Applying deadbands
-        if (m_AdjustedVx < 0.1){
+        if (m_AdjustedVx < m_DriveDeadband){
             m_AdjustedVx = 0;
         }
-        if (m_AdjustedVy < 0.1){
+        if (m_AdjustedVy < m_DriveDeadband){
             m_AdjustedVy = 0;
         }
-        if (m_AdjustedOmega < 0.1){
+        if (m_AdjustedOmega < m_AngleDeadband){
             m_AdjustedOmega = 0;
         }
         
-
+        //Drive using adjusted values
         m_SwerveDrive.drive( new Translation2d(
             m_AdjustedVx, 
             
