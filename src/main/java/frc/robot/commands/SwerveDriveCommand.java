@@ -29,12 +29,30 @@ public class SwerveDriveCommand extends Command{
 
     @Override
     public void execute() {
+
+        //Adjusted Vx, Vy, and Omega for controller deadband
+        double m_AdjustedVx = m_Vx.getAsDouble();
+        double m_AdjustedVy = m_Vy.getAsDouble();
+        double m_AdjustedOmega = m_Omega.getAsDouble();
+
+        //Applying deadbands
+        if (m_AdjustedVx < 0.1){
+            m_AdjustedVx = 0;
+        }
+        if (m_AdjustedVy < 0.1){
+            m_AdjustedVy = 0;
+        }
+        if (m_AdjustedOmega < 0.1){
+            m_AdjustedOmega = 0;
+        }
+        
+
         m_SwerveDrive.drive( new Translation2d(
-            m_Vx.getAsDouble(), 
+            m_AdjustedVx, 
             
-            m_Vy.getAsDouble()), 
+            m_AdjustedVy), 
             
-            m_Omega.getAsDouble(), 
+            m_AdjustedOmega, 
             
             false // Assuming field-relative control
         );
