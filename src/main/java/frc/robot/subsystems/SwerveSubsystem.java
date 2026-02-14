@@ -36,8 +36,6 @@ import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
- 
-import swervelib.SwerveModule;
 
 public class SwerveSubsystem extends SubsystemBase{
 
@@ -53,14 +51,18 @@ public class SwerveSubsystem extends SubsystemBase{
         // Set up starting position depending on alliance for odometry
         boolean blueAlliance = isRedAlliance();
         Pose2d startingPose;
+
+        // Set the verbosity of the telemetry.  HIGH is good for debugging, but may cause performance issues.  Adjust as needed.
+        SwerveDriveTelemetry.verbosity = TelemetryVerbosity.LOW; 
+
         // TODO: Set up different starting positions
         if (blueAlliance){
             // Units are in meters
-            startingPose =  new Pose2d(new Translation2d(1, 4), Rotation2d.fromDegrees(0));
+            startingPose =  new Pose2d(new Translation2d(1, 4), Rotation2d.fromDegrees(180)); 
         }
         else{
             // Flip for red alliance
-            startingPose = new Pose2d(new Translation2d(16, 4), Rotation2d.fromDegrees(180));
+            startingPose = new Pose2d(new Translation2d(16, 4), Rotation2d.fromDegrees(0)); 
         }
         
         // Parse swerve configurations and create swerve drive object
@@ -75,9 +77,9 @@ public class SwerveSubsystem extends SubsystemBase{
         swerveDrive.setHeadingCorrection(false); // Turn on to correct heading
         swerveDrive.setCosineCompensator(false); // Turn on to automatically slow or speed up swerve modules that should be close to their desired state in theory
         swerveDrive.setAngularVelocityCompensation(true, true, 0.1); // Tune to compensate for angular skew in movement
-        swerveDrive.setModuleEncoderAutoSynchronize(false, 1); // Turn on to periodcally synchronize absolute encoders and motor encoders during periods without movement
+        swerveDrive.setModuleEncoderAutoSynchronize(true, 1); // Turn on to periodcally synchronize absolute encoders and motor encoders during periods without movement
         //swerveDrive.pushOffsetsToEncoders();
-        SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH; // Set the verbosity of the telemetry.  HIGH is good for debugging, but may cause performance issues.  Adjust as needed.
+        swerveDrive.synchronizeModuleEncoders();
 
         setupPathPlanner();
     }

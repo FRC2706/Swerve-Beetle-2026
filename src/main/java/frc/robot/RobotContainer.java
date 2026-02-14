@@ -64,9 +64,12 @@ public class RobotContainer {
     m_swerveSubsystem.setDefaultCommand(
        new SwerveDriveCommand(
           m_swerveSubsystem,
-          () -> -m_driverController.getLeftY(), // Forward/backward
-          () -> -m_driverController.getLeftX(), // Left/right
-          () -> -m_driverController.getRightX())
+          () -> -m_driverController.getLeftY(), // Move Forward/backward
+          () -> -m_driverController.getLeftX(), // Move Left/right
+          () -> -m_driverController.getRightX(), // Turn left/right
+          0.1,
+          0.1
+          )
   );
 
     NamedCommands.registerCommand("test", new AlignToTargetCommand(m_swerveSubsystem, m_photonVision));
