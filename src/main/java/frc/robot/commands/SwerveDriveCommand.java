@@ -57,7 +57,7 @@ public class SwerveDriveCommand extends Command{
             
             m_AdjustedOmega, 
             
-            false // Assuming field-relative control
+            true // Assuming field-relative control
         );
     }
 
