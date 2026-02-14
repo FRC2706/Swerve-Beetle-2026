@@ -39,13 +39,13 @@ public class SwerveDriveCommand extends Command{
         double m_AdjustedOmega = m_Omega.getAsDouble();
 
         //Applying deadbands
-        if (m_AdjustedVx < m_DriveDeadband){
+        if (Math.abs(m_AdjustedVx) < m_DriveDeadband){
             m_AdjustedVx = 0;
         }
-        if (m_AdjustedVy < m_DriveDeadband){
+        if (Math.abs(m_AdjustedVy) < m_DriveDeadband){
             m_AdjustedVy = 0;
         }
-        if (m_AdjustedOmega < m_AngleDeadband){
+        if (Math.abs(m_AdjustedOmega) < m_AngleDeadband){
             m_AdjustedOmega = 0;
         }
         
