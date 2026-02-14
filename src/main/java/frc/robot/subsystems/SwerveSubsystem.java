@@ -58,11 +58,11 @@ public class SwerveSubsystem extends SubsystemBase{
         // TODO: Set up different starting positions
         if (blueAlliance){
             // Units are in meters
-            startingPose =  new Pose2d(new Translation2d(1, 4), Rotation2d.fromDegrees(0));
+            startingPose =  new Pose2d(new Translation2d(1, 4), Rotation2d.fromDegrees(180)); 
         }
         else{
             // Flip for red alliance
-            startingPose = new Pose2d(new Translation2d(16, 4), Rotation2d.fromDegrees(180));
+            startingPose = new Pose2d(new Translation2d(16, 4), Rotation2d.fromDegrees(0)); 
         }
         
         // Parse swerve configurations and create swerve drive object
