@@ -13,13 +13,12 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 public class AutoPlans extends SubsystemBase {
 
 
-    PathPlannerAuto test, otherTest;
+    PathPlannerAuto DriveForward;
 
     public AutoPlans(){
         registerCommands();
 
-        test = new PathPlannerAuto(new PrintCommand("test"));
-        otherTest = new PathPlannerAuto("test");
+        DriveForward = new PathPlannerAuto("Drive_Forward");
         
     }
 
@@ -32,9 +31,7 @@ public class AutoPlans extends SubsystemBase {
             default:
                 return null;
             case 0:
-                return test;
-            case 1:
-                return otherTest;
+                return DriveForward;
         }
     }
     
