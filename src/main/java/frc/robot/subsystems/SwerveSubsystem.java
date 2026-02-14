@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 // Imports necessary to create SwerveDrive object
 import java.io.File;
-import java.util.Arrays;
 import java.util.function.DoubleSupplier;
 
 import org.dyn4j.geometry.Rotation;
@@ -54,7 +53,7 @@ public class SwerveSubsystem extends SubsystemBase{
         Pose2d startingPose;
 
         // Set the verbosity of the telemetry.  HIGH is good for debugging, but may cause performance issues.  Adjust as needed.
-        SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH; 
+        SwerveDriveTelemetry.verbosity = TelemetryVerbosity.LOW; 
 
         // TODO: Set up different starting positions
         if (blueAlliance){
@@ -79,7 +78,9 @@ public class SwerveSubsystem extends SubsystemBase{
         swerveDrive.setCosineCompensator(false); // Turn on to automatically slow or speed up swerve modules that should be close to their desired state in theory
         swerveDrive.setAngularVelocityCompensation(true, true, 0.1); // Tune to compensate for angular skew in movement
         swerveDrive.setModuleEncoderAutoSynchronize(true, 1); // Turn on to periodcally synchronize absolute encoders and motor encoders during periods without movement
+        //swerveDrive.pushOffsetsToEncoders();
         swerveDrive.synchronizeModuleEncoders();
+        SwerveDriveTelemetry.verbosity = TelemetryVerbosity.LOW; // Set the verbosity of the telemetry.  HIGH is good for debugging, but may cause performance issues.  Adjust as needed.
 
         setupPathPlanner();
     }
@@ -158,17 +159,6 @@ public class SwerveSubsystem extends SubsystemBase{
                 false
             );
         });
-    }
-
-    /**
-     * Returns a Command that centers the modules of the SwerveDrive subsystem.
-     *
-     * @return a Command that centers the modules of the SwerveDrive subsystem
-     */
-    public Command centerModulesCommand()
-    {
-        return run(() -> Arrays.asList(swerveDrive.getModules())
-                            .forEach(it -> it.setAngle(0.0)));
     }
 
     /**
