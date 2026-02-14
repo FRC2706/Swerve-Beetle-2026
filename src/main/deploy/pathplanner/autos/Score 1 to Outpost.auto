@@ -11,9 +11,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Score 1 to outpost"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Ground Intake"
           }
         }
       ]
