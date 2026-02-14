@@ -5,12 +5,6 @@
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "Scoring Position 1"
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "Shoot"
@@ -19,13 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Hub to outpost"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Ground Intake"
+            "pathName": "Hub to Depot"
           }
         }
       ]
