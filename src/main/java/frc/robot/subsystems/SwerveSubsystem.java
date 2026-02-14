@@ -80,7 +80,6 @@ public class SwerveSubsystem extends SubsystemBase{
         swerveDrive.setModuleEncoderAutoSynchronize(true, 1); // Turn on to periodcally synchronize absolute encoders and motor encoders during periods without movement
         //swerveDrive.pushOffsetsToEncoders();
         swerveDrive.synchronizeModuleEncoders();
-        SwerveDriveTelemetry.verbosity = TelemetryVerbosity.LOW; // Set the verbosity of the telemetry.  HIGH is good for debugging, but may cause performance issues.  Adjust as needed.
 
         setupPathPlanner();
     }
