@@ -44,10 +44,10 @@ public class RobotContainer {
 
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
-  private final PhotonVisionSubsystem m_photonVision = new PhotonVisionSubsystem("photoncamera"); // name from PhotonVision/config
+  //private final PhotonVisionSubsystem m_photonVision = new PhotonVisionSubsystem("photoncamera"); // name from PhotonVision/config
 
   // Pathplanner testing
-  private final AutoPlans m_autoPlans = new AutoPlans();
+  //private final AutoPlans m_autoPlans = new AutoPlans();
   //private final SendableChooser<Command> autoChooser;
   
 
@@ -94,12 +94,12 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
+    //new Trigger(m_exampleSubsystem::exampleCondition)
+       // .onTrue(new ExampleCommand(m_exampleSubsystem));
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
     //m_driverController.a().whileTrue(new AlignToTargetCommand(m_swerveSubsystem, m_photonVision));
   
@@ -118,6 +118,6 @@ public class RobotContainer {
     //if (selected != null) {
     //  return selected;
     //}
-    return m_autoPlans.getAutonomousCommand(0);
+    return null;
   }
 }
