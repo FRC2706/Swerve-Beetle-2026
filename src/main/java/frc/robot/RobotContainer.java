@@ -48,7 +48,7 @@ public class RobotContainer {
 
   // Pathplanner testing
   private final AutoPlans m_autoPlans = new AutoPlans();
-  //private final SendableChooser<Command> autoChooser;
+  private final SendableChooser<Command> autoChooser;
   
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -64,19 +64,16 @@ public class RobotContainer {
     m_swerveSubsystem.setDefaultCommand(
        new SwerveDriveCommand(
           m_swerveSubsystem,
-          () -> -m_driverController.getLeftY(), // Move Forward/backward
-          () -> -m_driverController.getLeftX(), // Move Left/right
-          () -> -m_driverController.getRightX(), // Turn left/right
-          0.1,
-          0.1
-          )
+          () -> -m_driverController.getLeftY(), // Forward/backward
+          () -> -m_driverController.getLeftX(), // Left/right
+          () -> -m_driverController.getRightX(),0.1,0.1)
   );
 
-    //NamedCommands.registerCommand("test", new AlignToTargetCommand(m_swerveSubsystem, m_photonVision));
+    NamedCommands.registerCommand("test", new AlignToTargetCommand(m_swerveSubsystem, m_photonVision));
 
 
-    //autoChooser = AutoBuilder.buildAutoChooser("Drive Forward Auto");
-    //SmartDashboard.putData("Auto Mode", autoChooser);
+    autoChooser = AutoBuilder.buildAutoChooser("Drive Forward Auto");
+    SmartDashboard.putData("Auto Mode", autoChooser);
 
   
     configureBindings();
@@ -101,7 +98,7 @@ public class RobotContainer {
     // cancelling on release.
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
-    //m_driverController.a().whileTrue(new AlignToTargetCommand(m_swerveSubsystem, m_photonVision));
+    m_driverController.a().whileTrue(new AlignToTargetCommand(m_swerveSubsystem, m_photonVision));
   
   }
 
@@ -112,12 +109,12 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // Return the command selected on the SendableChooser (built by AutoBuilder).
-    //Command selected = autoChooser.getSelected();
+    Command selected = autoChooser.getSelected();
 
     // If the chooser has no selection, fall back to the AutoPlans default.
-    //if (selected != null) {
-    //  return selected;
-    //}
+    if (selected != null) {
+      return selected;
+    }
     return m_autoPlans.getAutonomousCommand(0);
   }
 }
