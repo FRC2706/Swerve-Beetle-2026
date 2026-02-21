@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.Meter;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 // Imports necessary to create SwerveDrive object
@@ -37,9 +38,11 @@ import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
+import swervelib.parser.PIDFConfig;
+
 public class SwerveSubsystem extends SubsystemBase{
 
-    double maximumSpeed = 3;
+    double maximumSpeed = 2;
 
     // Swerve drive object
     private final SwerveDrive swerveDrive; 
@@ -75,11 +78,12 @@ public class SwerveSubsystem extends SubsystemBase{
 
         // Configure Swerve Drive
         swerveDrive.setHeadingCorrection(false); // Turn on to correct heading
-        swerveDrive.setCosineCompensator(false); // Turn on to automatically slow or speed up swerve modules that should be close to their desired state in theory
-        swerveDrive.setAngularVelocityCompensation(true, true, 0.1); // Tune to compensate for angular skew in movement
+        swerveDrive.setCosineCompensator(true); // Turn on to automatically slow or speed up swerve modules that should be close to their desired state in theory
+        swerveDrive.setAngularVelocityCompensation(false, true, 0.1); // Tune to compensate for angular skew in movement
         swerveDrive.setModuleEncoderAutoSynchronize(true, 1); // Turn on to periodcally synchronize absolute encoders and motor encoders during periods without movement
         //swerveDrive.pushOffsetsToEncoders();
         swerveDrive.synchronizeModuleEncoders();
+        swerveDrive.setModuleEncoderAutoSynchronize(false, 1);
 
         //setupPathPlanner();
     }
@@ -178,7 +182,6 @@ public class SwerveSubsystem extends SubsystemBase{
     public void zeroGyro()
     {
         swerveDrive.zeroGyro();
-        //resetOdometry();
     }
 
     // Resets the encoders -- should be used to manually reset robot (i.e after autonomous)

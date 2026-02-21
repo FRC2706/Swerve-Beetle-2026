@@ -32,6 +32,7 @@ import frc.robot.commands.AlignToTargetCommand;
 
 // Pathplanner testing
 import frc.robot.subsystems.AutoPlans;
+import frc.robot.commands.ZeroGyroCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -99,7 +100,7 @@ public class RobotContainer {
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    m_driverController.b().onTrue(new ZeroGyroCommand(m_swerveSubsystem));
 
     //m_driverController.a().whileTrue(new AlignToTargetCommand(m_swerveSubsystem, m_photonVision));
   
