@@ -39,7 +39,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
 public class SwerveSubsystem extends SubsystemBase{
 
-    double maximumSpeed = Units.feetToMeters(4.5);
+    double maximumSpeed = 3;
 
     // Swerve drive object
     private final SwerveDrive swerveDrive; 
@@ -49,20 +49,20 @@ public class SwerveSubsystem extends SubsystemBase{
     public SwerveSubsystem(File swerveJsonDirectory){
         
         // Set up starting position depending on alliance for odometry
-        boolean blueAlliance = isRedAlliance();
+        boolean redAlliance = isRedAlliance();
         Pose2d startingPose;
 
         // Set the verbosity of the telemetry.  HIGH is good for debugging, but may cause performance issues.  Adjust as needed.
-        SwerveDriveTelemetry.verbosity = TelemetryVerbosity.LOW; 
+        SwerveDriveTelemetry.verbosity = TelemetryVerbosity.INFO; 
 
         // TODO: Set up different starting positions
-        if (blueAlliance){
-            // Units are in meters
-            startingPose =  new Pose2d(new Translation2d(1, 4), Rotation2d.fromDegrees(180)); 
+        if (redAlliance){
+            // Flip in red alliance
+            startingPose =  new Pose2d(new Translation2d(16, 4), Rotation2d.fromDegrees(180)); 
         }
         else{
-            // Flip for red alliance
-            startingPose = new Pose2d(new Translation2d(16, 4), Rotation2d.fromDegrees(0)); 
+            // Blue alliance
+            startingPose = new Pose2d(new Translation2d(1, 4), Rotation2d.fromDegrees(0)); 
         }
         
         // Parse swerve configurations and create swerve drive object
@@ -81,10 +81,10 @@ public class SwerveSubsystem extends SubsystemBase{
         //swerveDrive.pushOffsetsToEncoders();
         swerveDrive.synchronizeModuleEncoders();
 
-        setupPathPlanner();
+        //setupPathPlanner();
     }
 
-    public void setupPathPlanner(){
+    /**public void setupPathPlanner(){
         // TODO: PATH PLANNER FILE SETUP
         RobotConfig config;
 
@@ -108,7 +108,7 @@ public class SwerveSubsystem extends SubsystemBase{
             // Handle exception as needed
             e.printStackTrace();
         }
-    }
+    }*/
 
     @Override
     public void periodic(){
