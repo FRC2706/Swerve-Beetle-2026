@@ -111,7 +111,6 @@ public class RobotContainer {
     // Return the command selected on the SendableChooser (built by AutoBuilder).
     Command selected = autoChooser.getSelected();
 
-    // If the chooser has no selection, fall back to the AutoPlans default.
     if (selected != null) {
       return selected;
     }
