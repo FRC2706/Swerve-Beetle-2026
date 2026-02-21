@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import java.io.File;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -47,9 +46,9 @@ public class RobotContainer {
   private final PhotonVisionSubsystem m_photonVision = new PhotonVisionSubsystem("photoncamera"); // name from PhotonVision/config
 
   // Pathplanner testing
-  private final AutoPlans m_autoPlans = new AutoPlans();
+  private final AutoPlans m_autoPlans;
   private final SendableChooser<Command> autoChooser;
-  
+
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -67,15 +66,19 @@ public class RobotContainer {
           () -> -m_driverController.getLeftY(), // Forward/backward
           () -> -m_driverController.getLeftX(), // Left/right
           () -> -m_driverController.getRightX(),0.1,0.1)
-  );
+    );
 
     NamedCommands.registerCommand("test", new AlignToTargetCommand(m_swerveSubsystem, m_photonVision));
 
+    // Configure PathPlanner/AutoBuilder now that the swerve subsystem exists
+    // This will configure AutoBuilder using the subsystem-provided callbacks.
+    m_swerveSubsystem.setupPathPlanner();
 
+    // Now that AutoBuilder is configured, create autos and the chooser
+    m_autoPlans = new AutoPlans();
     autoChooser = AutoBuilder.buildAutoChooser("Drive Forward Auto");
     SmartDashboard.putData("Auto Mode", autoChooser);
 
-  
     configureBindings();
 
   }

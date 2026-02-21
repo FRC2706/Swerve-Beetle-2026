@@ -53,7 +53,7 @@ public class SwerveSubsystem extends SubsystemBase{
         Pose2d startingPose;
 
         // Set the verbosity of the telemetry.  HIGH is good for debugging, but may cause performance issues.  Adjust as needed.
-        SwerveDriveTelemetry.verbosity = TelemetryVerbosity.INFO; 
+        SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH; 
 
         // TODO: Set up different starting positions
         if (redAlliance){
@@ -83,9 +83,9 @@ public class SwerveSubsystem extends SubsystemBase{
 
         //setupPathPlanner();
     }
-
-    /**public void setupPathPlanner(){
-        // TODO: PATH PLANNER FILE SETUP
+    
+    public void setupPathPlanner(){
+        // PATH PLANNER FILE SETUP
         RobotConfig config;
 
         try{
@@ -96,8 +96,8 @@ public class SwerveSubsystem extends SubsystemBase{
                 this::getRobotVelocity, // Pass method supplying robot relative chassis
                 (speedsRobotRelative, moduleFeedForwards) -> {this.drive(speedsRobotRelative);}, // Pass method that will drive the robot -- only robot relative chassis speeds
                 new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
-                        new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-                        new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+                        new PIDConstants(0.0025, 0.0, 0.0), // Translation PID constants
+                        new PIDConstants(0.0025, 0.0, 0.0) // Rotation PID constants
                 ),  
                 config, // Pass on the config
                 () -> isRedAlliance(), // Check which alliance the robot is on
@@ -108,7 +108,7 @@ public class SwerveSubsystem extends SubsystemBase{
             // Handle exception as needed
             e.printStackTrace();
         }
-    }*/
+    }
 
     @Override
     public void periodic(){
