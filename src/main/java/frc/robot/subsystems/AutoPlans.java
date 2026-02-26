@@ -17,8 +17,7 @@ public class AutoPlans extends SubsystemBase {
 
     public AutoPlans(){
         registerCommands();
-
-        DriveForward = new PathPlannerAuto("Drive_Forward");
+        
         
     }
 
@@ -31,6 +30,16 @@ public class AutoPlans extends SubsystemBase {
             default:
                 return null;
             case 0:
+    
+                if (DriveForward == null) {
+                    try {
+                        DriveForward = new PathPlannerAuto("Drive_Forward");
+                    } catch (Exception e) {
+                        // If creation fails, return a harmless fallback command and print the error.
+                        e.printStackTrace();
+                        return new PrintCommand("Failed to load Drive_Forward auto");
+                    }
+                }
                 return DriveForward;
         }
     }
