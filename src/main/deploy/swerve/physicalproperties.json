@@ -20,5 +20,7 @@
   "rampRate": {
     "drive": 0.25,
     "angle": 0.25
-  }
+  },
+  "bumperLength": 0.9,
+  "bumperWidth": 0.9
 }

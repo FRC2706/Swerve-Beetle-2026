@@ -39,7 +39,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
 public class SwerveSubsystem extends SubsystemBase{
 
-    double maximumSpeed = Units.feetToMeters(4.5);
+    double maximumSpeed = 3;
 
     // Swerve drive object
     private final SwerveDrive swerveDrive; 
@@ -49,20 +49,20 @@ public class SwerveSubsystem extends SubsystemBase{
     public SwerveSubsystem(File swerveJsonDirectory){
         
         // Set up starting position depending on alliance for odometry
-        boolean blueAlliance = isRedAlliance();
+        boolean redAlliance = isRedAlliance();
         Pose2d startingPose;
 
         // Set the verbosity of the telemetry.  HIGH is good for debugging, but may cause performance issues.  Adjust as needed.
-        SwerveDriveTelemetry.verbosity = TelemetryVerbosity.LOW; 
+        SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH; 
 
         // TODO: Set up different starting positions
-        if (blueAlliance){
-            // Units are in meters
-            startingPose =  new Pose2d(new Translation2d(1, 4), Rotation2d.fromDegrees(180)); 
+        if (redAlliance){
+            // Flip in red alliance
+            startingPose =  new Pose2d(new Translation2d(16, 4), Rotation2d.fromDegrees(180)); 
         }
         else{
-            // Flip for red alliance
-            startingPose = new Pose2d(new Translation2d(16, 4), Rotation2d.fromDegrees(0)); 
+            // Blue alliance
+            startingPose = new Pose2d(new Translation2d(1, 4), Rotation2d.fromDegrees(0)); 
         }
         
         // Parse swerve configurations and create swerve drive object
@@ -80,11 +80,11 @@ public class SwerveSubsystem extends SubsystemBase{
         swerveDrive.setModuleEncoderAutoSynchronize(true, 1); // Turn on to periodcally synchronize absolute encoders and motor encoders during periods without movement
         swerveDrive.synchronizeModuleEncoders();
 
-        setupPathPlanner();
+        //setupPathPlanner();
     }
-
+    
     public void setupPathPlanner(){
-        // TODO: PATH PLANNER FILE SETUP
+        // PATH PLANNER FILE SETUP
         RobotConfig config;
 
         try{
@@ -95,8 +95,8 @@ public class SwerveSubsystem extends SubsystemBase{
                 this::getRobotVelocity, // Pass method supplying robot relative chassis
                 (speedsRobotRelative, moduleFeedForwards) -> {this.drive(speedsRobotRelative);}, // Pass method that will drive the robot -- only robot relative chassis speeds
                 new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
-                        new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-                        new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+                        new PIDConstants(0.0025, 0.0, 0.0), // Translation PID constants
+                        new PIDConstants(0.0025, 0.0, 0.0) // Rotation PID constants
                 ),  
                 config, // Pass on the config
                 () -> isRedAlliance(), // Check which alliance the robot is on

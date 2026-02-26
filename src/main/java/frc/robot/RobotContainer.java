@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import java.io.File;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -64,21 +63,22 @@ public class RobotContainer {
     m_swerveSubsystem.setDefaultCommand(
        new SwerveDriveCommand(
           m_swerveSubsystem,
-          () -> -m_driverController.getLeftY(), // Move Forward/backward
-          () -> -m_driverController.getLeftX(), // Move Left/right
-          () -> -m_driverController.getRightX(), // Turn left/right
-          0.1,
-          0.1
-          )
-  );
+          () -> -m_driverController.getLeftY(), // Forward/backward
+          () -> -m_driverController.getLeftX(), // Left/right
+          () -> -m_driverController.getRightX(),0.1,0.1)
+    );
 
     NamedCommands.registerCommand("test", new AlignToTargetCommand(m_swerveSubsystem, m_photonVision));
 
+    // Configure PathPlanner/AutoBuilder now that the swerve subsystem exists
+    // This will configure AutoBuilder using the subsystem-provided callbacks.
+    m_swerveSubsystem.setupPathPlanner();
 
+    // Now that AutoBuilder is configured, create autos and the chooser
+    m_autoPlans = new AutoPlans();
     autoChooser = AutoBuilder.buildAutoChooser("Drive Forward Auto");
     SmartDashboard.putData("Auto Mode", autoChooser);
 
-  
     configureBindings();
 
   }
@@ -94,14 +94,14 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
+    //new Trigger(m_exampleSubsystem::exampleCondition)
+       // .onTrue(new ExampleCommand(m_exampleSubsystem));
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
-    //m_driverController.a().whileTrue(new AlignToTargetCommand(m_swerveSubsystem, m_photonVision));
+    m_driverController.a().whileTrue(new AlignToTargetCommand(m_swerveSubsystem, m_photonVision));
   
   }
 
@@ -112,6 +112,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // Return the command selected on the SendableChooser (built by AutoBuilder).
+    Command selected = autoChooser.getSelected();
     Command selected = autoChooser.getSelected();
 
     //If the chooser has no selection, fall back to the AutoPlans default.
