@@ -18,6 +18,7 @@ import swervelib.parser.SwerveParser;
 import swervelib.SwerveDrive;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import swervelib.math.SwerveMath;
@@ -77,13 +78,14 @@ public class SwerveSubsystem extends SubsystemBase{
         }
 
         // Configure Swerve Drive
-        swerveDrive.setHeadingCorrection(false); // Turn on to correct heading
-        swerveDrive.setCosineCompensator(true); // Turn on to automatically slow or speed up swerve modules that should be close to their desired state in theory
+        swerveDrive.setHeadingCorrection(true); // Turn on to correct heading
+        swerveDrive.setCosineCompensator(false); // Turn on to automatically slow or speed up swerve modules that should be close to their desired state in theory
         swerveDrive.setAngularVelocityCompensation(false, true, 0.1); // Tune to compensate for angular skew in movement
         swerveDrive.setModuleEncoderAutoSynchronize(true, 1); // Turn on to periodcally synchronize absolute encoders and motor encoders during periods without movement
         //swerveDrive.pushOffsetsToEncoders();
         swerveDrive.synchronizeModuleEncoders();
         swerveDrive.setModuleEncoderAutoSynchronize(false, 1);
+        swerveDrive.setGyroOffset(new Rotation3d(0,0,0));
 
         //setupPathPlanner();
     }
