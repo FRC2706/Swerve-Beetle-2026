@@ -36,6 +36,8 @@ import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveSubsystem extends SubsystemBase{
 
@@ -43,6 +45,8 @@ public class SwerveSubsystem extends SubsystemBase{
 
     // Swerve drive object
     private final SwerveDrive swerveDrive; 
+    // Field2d for SmartDashboard / Field widget
+    private final Field2d m_field = new Field2d();
     
     
     // Provide swerve configuration file as arguement
@@ -122,6 +126,13 @@ public class SwerveSubsystem extends SubsystemBase{
         swerveDrive.setModuleEncoderAutoSynchronize(true, 1); // Turn on to periodcally synchronize absolute encoders and motor encoders during periods without movement
         swerveDrive.synchronizeModuleEncoders();
 
+        // Publish Field2d so SmartDashboard / sim can display the robot pose
+        try {
+            SmartDashboard.putData("Field", m_field);
+        } catch (Exception e) {
+            // Ignore if SmartDashboard isn't available at construction time
+        }
+
         //setupPathPlanner();
     }
     
@@ -154,6 +165,12 @@ public class SwerveSubsystem extends SubsystemBase{
     @Override
     public void periodic(){
         updateOdometry();
+        // Update the Field2d with the latest odometry pose so dashboard shows robot
+        try {
+            m_field.setRobotPose(getPose());
+        } catch (Exception e) {
+            // Ignore if pose is not ready yet
+        }
     }
 
    /**
