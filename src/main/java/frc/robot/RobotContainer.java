@@ -25,8 +25,8 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.FollowPathCommand;
 import choreo.auto.AutoChooser;
 import choreo.auto.AutoFactory;
-
 import frc.robot.subsystems.PhotonSubsystem;
+import frc.robot.commands.PhotonDistanceCommand;
 //import frc.robot.commands.AlignToTargetCommand;
 
 // Pathplanner testing
@@ -92,6 +92,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+        PhotonDistanceCommand distanceCommand = new PhotonDistanceCommand(m_photonSubsystem); 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     //new Trigger(m_exampleSubsystem::exampleCondition)
        // .onTrue(new ExampleCommand(m_exampleSubsystem));
@@ -100,8 +101,7 @@ public class RobotContainer {
     // cancelling on release.
     //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
-    //m_driverController.a().whileTrue(new AlignToTargetCommand(m_swerveSubsystem, m_photonVision));
-  
+    m_driverController.rightTrigger().whileTrue(distanceCommand);
   }
 
   /**
@@ -117,5 +117,6 @@ public class RobotContainer {
       return selected;
     }
     return m_autoPlans.getAutonomousCommand(0);
+
   }
 }

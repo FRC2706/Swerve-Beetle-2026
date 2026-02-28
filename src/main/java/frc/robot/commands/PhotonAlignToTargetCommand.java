@@ -25,10 +25,10 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.PhotonSubsystem;
-
+import frc.robot.subsystems.SwerveSubsystem;
 // Class
 /** An example command that uses an example subsystem. */
-public class PhotonGetDistance extends Command {
+public class PhotonAlignToTargetCommand extends Command {
   @SuppressWarnings("PMD.UnusedPrivateField")
   private final PhotonSubsystem m_subsystem;
 
@@ -37,8 +37,8 @@ public class PhotonGetDistance extends Command {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public PhotonGetDistance(PhotonSubsystem subsystem) {
-    m_subsystem = subsystem;
+  public PhotonAlignToTargetCommand(PhotonSubsystem photonSubsystem) {
+    m_subsystem = photonSubsystem;
   }
 
   // Called when the command is initially scheduled.
@@ -49,7 +49,7 @@ public class PhotonGetDistance extends Command {
   @Override
   public void execute() {
   // Called once the command ends or is interrupted.
-    m_subsystem.getDistance();
+    double yaw = m_subsystem.getYaw(); 
 
   }
 
