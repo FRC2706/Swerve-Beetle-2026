@@ -25,6 +25,8 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators.None;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.FollowPathCommand;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
 import choreo.auto.AutoChooser;
 import choreo.auto.AutoFactory;
 
@@ -120,6 +122,7 @@ public class RobotContainer {
     if (selected != null) {
       return selected;
     }
+    return null;
     return null;
   }
 }
