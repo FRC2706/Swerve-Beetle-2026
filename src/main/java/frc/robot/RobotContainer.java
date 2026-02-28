@@ -26,8 +26,8 @@ import com.pathplanner.lib.commands.FollowPathCommand;
 import choreo.auto.AutoChooser;
 import choreo.auto.AutoFactory;
 
-import frc.robot.subsystems.PhotonVisionSubsystem;
-import frc.robot.commands.AlignToTargetCommand;
+import frc.robot.subsystems.PhotonSubsystem;
+//import frc.robot.commands.AlignToTargetCommand;
 
 // Pathplanner testing
 import frc.robot.subsystems.AutoPlans;
@@ -43,8 +43,7 @@ public class RobotContainer {
 
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
-  private final PhotonVisionSubsystem m_photonVision = new PhotonVisionSubsystem("photoncamera"); // name from PhotonVision/config
-
+  private final PhotonSubsystem m_photonSubsystem = new PhotonSubsystem(m_swerveSubsystem); // name from PhotonVision/config
   // Pathplanner testing
   private final AutoPlans m_autoPlans;
   private final SendableChooser<Command> autoChooser;
@@ -68,7 +67,7 @@ public class RobotContainer {
           () -> -m_driverController.getRightX(),0.1,0.1)
     );
 
-    NamedCommands.registerCommand("test", new AlignToTargetCommand(m_swerveSubsystem, m_photonVision));
+    // NamedCommands.registerCommand("test", new AlignToTargetCommand(m_swerveSubsystem, m_photonVision));
 
     // Configure PathPlanner/AutoBuilder now that the swerve subsystem exists
     // This will configure AutoBuilder using the subsystem-provided callbacks.
@@ -101,7 +100,7 @@ public class RobotContainer {
     // cancelling on release.
     //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
-    m_driverController.a().whileTrue(new AlignToTargetCommand(m_swerveSubsystem, m_photonVision));
+    //m_driverController.a().whileTrue(new AlignToTargetCommand(m_swerveSubsystem, m_photonVision));
   
   }
 
