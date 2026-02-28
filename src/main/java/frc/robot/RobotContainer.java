@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.io.File;
 
+import com.fasterxml.jackson.annotation.ObjectIdGenerators.None;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.FollowPathCommand;
@@ -42,7 +43,6 @@ import frc.robot.subsystems.AutoPlans;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
   private final PhotonVisionSubsystem m_photonVision = new PhotonVisionSubsystem("photoncamera"); // name from PhotonVision/config
 
@@ -77,9 +77,8 @@ public class RobotContainer {
 
     // Now that AutoBuilder is configured, create autos and the chooser
     m_autoPlans = new AutoPlans();
-    autoChooser = AutoBuilder.buildAutoChooser(getAutonomousCommand(0));
+    autoChooser = AutoBuilder.buildAutoChooser(m_autoPlans.getAutonomousCommand(0));
     SmartDashboard.putData("Auto Mode", autoChooser);
-
     configureBindings();
 
   }
@@ -121,6 +120,6 @@ public class RobotContainer {
     if (selected != null) {
       return selected;
     }
-    return m_autoPlans.getAutonomousCommand(0);
+    return null;
   }
 }

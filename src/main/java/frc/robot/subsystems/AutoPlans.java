@@ -32,7 +32,7 @@ public class AutoPlans extends SubsystemBase {
             case 0:
     
                 if (DriveForward == null) {
-                    System.out.println()
+                    System.out.println("Failed to load Drive_Forward auto");
                     return null;
                 }
                 return "Drive Forward";
