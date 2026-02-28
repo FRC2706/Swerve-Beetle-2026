@@ -94,11 +94,13 @@ public class PhotonSubsystem extends SubsystemBase {
         }
 
         // Estimate robot pose on the field using known tag pose and observed camera->target
+        // Use the tag pose's actual Z value for the target height and a zero target pitch
+        // (tags are vertical; use 0 radians for pitch unless you have a different tag orientation).
         Pose2d robotPose = PhotonUtils.estimateFieldToRobot(
             kCameraHeight,
-            kTargetHeight,
-            getPitch(),
-            kTargetPitch,
+            tagPose3d.getZ(), // use actual tag height from the field layout
+            kCameraPitch,
+            0.0, // tag pitch in radians (use 0 for standard vertical AprilTags)
             Rotation2d.fromDegrees(-target.getYaw()),
             m_SwerveSubsystem.getOdometryHeading(),
             fieldTagPose2d,
@@ -146,7 +148,7 @@ public class PhotonSubsystem extends SubsystemBase {
         return 0.0;
     }
 
-    // Returns cameraToTarget transform3d things???
+    // Returns cameraToTarget transform3d things??
     public Transform3d cameraToTarget() {
         if (!hasTarget()) return new Transform3d();
         return new Transform3d(target.getBestCameraToTarget().getTranslation(), target.getBestCameraToTarget().getRotation());
