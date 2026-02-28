@@ -28,10 +28,10 @@ public class PhotonSubsystem extends SubsystemBase {
     private PhotonPipelineResult result;
     private PhotonTrackedTarget target;
     public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
-    private static final double kCameraHeight = 0.44; // TODO: measure camera height
-    private static final double kTargetHeight = 1.22; // TODO: measure target height
-    private static final double kCameraPitch = 30*Math.PI/180; // TODO: measure camera pitch
-    private static final double kTargetPitch = Math.PI/2; // TODO: measure target pitch
+    private static final double kCameraHeight = 0.44; // assigns camera height in meters
+    private static double kTargetHeight = 1.22; // assigns target height in meters // TODO: change this so it changes based on APrilTag ID
+    private static final double kCameraPitch = 30*Math.PI/180; // TODO: decide on the final camera pitch, current angle is a guesstimate (30 degrees but in radians)
+    private static final double kTargetPitch = Math.PI/2; // assigns target angle in radians
     private final SwerveSubsystem m_SwerveSubsystem;
                             
     public PhotonSubsystem(SwerveSubsystem swerveSubsystem) { //private? or public?
