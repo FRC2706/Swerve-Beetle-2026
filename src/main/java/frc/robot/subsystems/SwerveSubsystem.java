@@ -78,7 +78,9 @@ public class SwerveSubsystem extends SubsystemBase{
         swerveDrive.angularVelocityCorrection = true;
         swerveDrive.autonomousAngularVelocityCorrection = true;
         swerveDrive.setCosineCompensator(false); // Turn on to automatically slow or speed up swerve modules that should be close to their desired state in theory
-        swerveDrive.setAngularVelocityCompensation(true, true, 0.1); // Tune to compensate for angular skew in movement
+            // Disable angular velocity compensation when IMU may be unavailable in simulation to avoid NPEs.
+            // If you have a working IMU in sim/hardware, set this to true and tune the parameters.
+            swerveDrive.setAngularVelocityCompensation(false, true, 0.1); // Tune to compensate for angular skew in movement
         swerveDrive.setModuleEncoderAutoSynchronize(true, 1); // Turn on to periodcally synchronize absolute encoders and motor encoders during periods without movement
         swerveDrive.synchronizeModuleEncoders();
 

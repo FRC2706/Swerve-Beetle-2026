@@ -77,7 +77,7 @@ public class RobotContainer {
 
     // Now that AutoBuilder is configured, create autos and the chooser
     m_autoPlans = new AutoPlans();
-    autoChooser = AutoBuilder.buildAutoChooser("Drive Forward Auto");
+    autoChooser = AutoBuilder.buildAutoChooser(getAutonomousCommand(0));
     SmartDashboard.putData("Auto Mode", autoChooser);
 
     configureBindings();

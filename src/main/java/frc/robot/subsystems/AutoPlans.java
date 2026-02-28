@@ -25,22 +25,17 @@ public class AutoPlans extends SubsystemBase {
         NamedCommands.registerCommand("test",new PrintCommand("test"));
     }
 
-    public Command getAutonomousCommand(int commandIndex){
+    public String getAutonomousCommand(int commandIndex){
         switch(commandIndex){
             default:
                 return null;
             case 0:
     
                 if (DriveForward == null) {
-                    try {
-                        DriveForward = new PathPlannerAuto("Drive_Forward");
-                    } catch (Exception e) {
-                        // If creation fails, return a harmless fallback command and print the error.
-                        e.printStackTrace();
-                        return new PrintCommand("Failed to load Drive_Forward auto");
-                    }
+                    System.out.println()
+                    return null;
                 }
-                return DriveForward;
+                return "Drive Forward";
         }
     }
     
