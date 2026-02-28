@@ -11,21 +11,9 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "Hub to Depot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Ground Intake"
           }
         },
         {
@@ -35,21 +23,9 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "Hub to outpost"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Take outpost balls"
           }
         },
         {
@@ -59,33 +35,15 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "Hub to outpost"
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Take outpost balls"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "Outpost to Hub"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
           }
         }
       ]
