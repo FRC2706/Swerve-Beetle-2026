@@ -53,7 +53,7 @@ public class SwerveSubsystem extends SubsystemBase{
         Pose2d startingPose;
 
         // Set the verbosity of the telemetry.  HIGH is good for debugging, but may cause performance issues.  Adjust as needed.
-        SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH; 
+        SwerveDriveTelemetry.verbosity = TelemetryVerbosity.INFO; 
 
         // TODO: Set up different starting positions
         if (redAlliance){
@@ -75,6 +75,8 @@ public class SwerveSubsystem extends SubsystemBase{
 
         // Configure Swerve Drive
         swerveDrive.setHeadingCorrection(true); // Turn on to correct heading
+        swerveDrive.angularVelocityCorrection = true;
+        swerveDrive.autonomousAngularVelocityCorrection = true;
         swerveDrive.setCosineCompensator(false); // Turn on to automatically slow or speed up swerve modules that should be close to their desired state in theory
         swerveDrive.setAngularVelocityCompensation(true, true, 0.1); // Tune to compensate for angular skew in movement
         swerveDrive.setModuleEncoderAutoSynchronize(true, 1); // Turn on to periodcally synchronize absolute encoders and motor encoders during periods without movement
@@ -174,7 +176,7 @@ public class SwerveSubsystem extends SubsystemBase{
     /**
      * Resets the gyro angle to zero and resets odometry to the same position, but facing toward 0.
      */
-    public void zeroGyro()
+    public void resetGyro()
     {
         swerveDrive.zeroGyro();
         //resetOdometry();

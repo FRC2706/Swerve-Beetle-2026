@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.ResetGyroCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -102,6 +103,9 @@ public class RobotContainer {
     //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
     m_driverController.a().whileTrue(new AlignToTargetCommand(m_swerveSubsystem, m_photonVision));
+
+    //Zero the gyro such that forward is where the robot is currently looking
+    m_driverController.start().onTrue(new ResetGyroCommand(m_swerveSubsystem));
   
   }
 
