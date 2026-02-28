@@ -23,6 +23,10 @@ public class AutoPlans extends SubsystemBase {
 
     public void registerCommands(){
         NamedCommands.registerCommand("test",new PrintCommand("test"));
+        NamedCommands.registerCommand("Shoot",new PrintCommand("shoot"));
+        NamedCommands.registerCommand("Deploy Ground Intake", new PrintCommand("Deploy ground intake"));
+        NamedCommands.registerCommand("Ground Intake", new PrintCommand("Ground Intake"));
+        NamedCommands.registerCommand("Take outpost balls", new PrintCommand("Take outpost balls"));
     }
 
     public Command getAutonomousCommand(int commandIndex){

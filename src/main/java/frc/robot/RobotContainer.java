@@ -24,6 +24,8 @@ import java.io.File;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.FollowPathCommand;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
 import choreo.auto.AutoChooser;
 import choreo.auto.AutoFactory;
 
@@ -77,7 +79,25 @@ public class RobotContainer {
 
     // Now that AutoBuilder is configured, create autos and the chooser
     m_autoPlans = new AutoPlans();
-    autoChooser = AutoBuilder.buildAutoChooser("Drive Forward Auto");
+    autoChooser = AutoBuilder.buildAutoChooser();
+
+    //Testing case switch to have the default auto be based on selector switch
+    int test = 1;
+    switch (test){
+      default:
+        autoChooser.setDefaultOption("Do nothing", AutoBuilder.buildAuto("Do nothing"));
+        break;
+      case 0:
+        autoChooser.setDefaultOption("Deploy Ground Intake", AutoBuilder.buildAuto("Deploy Ground Intake"));
+        break;
+      case 1:
+        autoChooser.setDefaultOption("Shoot", AutoBuilder.buildAuto("Shoot"));
+        break;
+    }
+
+    System.out.println(autoChooser.getSelected().getName());
+    
+    //SmartDashboard.
     SmartDashboard.putData("Auto Mode", autoChooser);
 
     configureBindings();
@@ -121,6 +141,6 @@ public class RobotContainer {
     if (selected != null) {
       return selected;
     }
-    return m_autoPlans.getAutonomousCommand(0);
+    return null;
   }
 }
