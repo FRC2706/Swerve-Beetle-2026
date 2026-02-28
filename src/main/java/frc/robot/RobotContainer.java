@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.AutoSelectorKnobSubsystem;
 import frc.robot.commands.SwerveDriveCommand;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -47,7 +48,7 @@ public class RobotContainer {
 
   private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
   private final PhotonVisionSubsystem m_photonVision = new PhotonVisionSubsystem("photoncamera"); // name from PhotonVision/config
-
+  private final AutoSelectorKnobSubsystem m_autoSelectorKnobSubsystem = new AutoSelectorKnobSubsystem();
   // Pathplanner testing
   private final AutoPlans m_autoPlans;
   private final SendableChooser<Command> autoChooser;
@@ -71,7 +72,7 @@ public class RobotContainer {
           () -> -m_driverController.getRightX(),0.1,0.1)
     );
 
-    NamedCommands.registerCommand("test", new AlignToTargetCommand(m_swerveSubsystem, m_photonVision));
+    NamedCommands.registerCommand("AlignToTargetCommand", new AlignToTargetCommand(m_swerveSubsystem, m_photonVision));
 
     // Configure PathPlanner/AutoBuilder now that the swerve subsystem exists
     // This will configure AutoBuilder using the subsystem-provided callbacks.
@@ -79,7 +80,8 @@ public class RobotContainer {
 
     // Now that AutoBuilder is configured, create autos and the chooser
     m_autoPlans = new AutoPlans();
-    autoChooser = AutoBuilder.buildAutoChooser(m_autoPlans.getAutonomousCommand(0));
+    //autoChooser = AutoBuilder.buildAutoChooser(m_autoPlans.getAutonomousCommand(m_autoSelectorKnobSubsystem.getAutoMode()));
+    autoChooser = AutoBuilder.buildAutoChooser("Drive Forward");
     SmartDashboard.putData("Auto Mode", autoChooser);
     configureBindings();
 

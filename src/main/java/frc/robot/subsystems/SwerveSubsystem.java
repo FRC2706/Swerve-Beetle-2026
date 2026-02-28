@@ -47,6 +47,24 @@ public class SwerveSubsystem extends SubsystemBase{
     
     // Provide swerve configuration file as arguement
     public SwerveSubsystem(File swerveJsonDirectory){
+        // If the deploy directory used at runtime doesn't contain the expected swerve
+        // config files, fall back to the repository's src/main/deploy/swerve folder so
+        // local simulation uses the up-to-date JSON files during development.
+        File checkedSwerveDir = swerveJsonDirectory;
+        try {
+            File deploySwerve = new File(Filesystem.getDeployDirectory(), "swerve");
+            File srcSwerve = new File("src/main/deploy/swerve");
+            if (deploySwerve.exists() && new File(deploySwerve, "swervedrive.json").exists()) {
+                checkedSwerveDir = deploySwerve;
+            } else if (srcSwerve.exists() && new File(srcSwerve, "swervedrive.json").exists()) {
+                checkedSwerveDir = srcSwerve;
+                System.out.println("[DEBUG] Using src/main/deploy/swerve as swerve config directory for simulation.");
+            } else {
+                System.out.println("[DEBUG] No swerve config found in deploy or src/main/deploy; using provided directory: " + swerveJsonDirectory.getAbsolutePath());
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         
         // Set up starting position depending on alliance for odometry
         boolean redAlliance = isRedAlliance();
@@ -65,18 +83,38 @@ public class SwerveSubsystem extends SubsystemBase{
             startingPose = new Pose2d(new Translation2d(1, 4), Rotation2d.fromDegrees(0)); 
         }
         
+        // Debug: print the chosen swerve config directory and its swervedrive.json so we can
+        // verify which JSONs are being loaded at runtime.
+        try {
+            System.out.println("[DEBUG] Chosen swerve config directory: " + checkedSwerveDir.getAbsolutePath());
+            File swervedriveFile = new File(checkedSwerveDir, "swervedrive.json");
+            if (swervedriveFile.exists()) {
+                System.out.println("[DEBUG] swervedrive.json contents:");
+                java.util.Scanner s = new java.util.Scanner(swervedriveFile).useDelimiter("\\A");
+                System.out.println(s.hasNext() ? s.next() : "<empty>");
+                s.close();
+            } else {
+                System.out.println("[DEBUG] swervedrive.json not found in chosen directory");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
         // Parse swerve configurations and create swerve drive object
         try{
-            swerveDrive = new SwerveParser(swerveJsonDirectory).createSwerveDrive(maximumSpeed, startingPose);
+            swerveDrive = new SwerveParser(checkedSwerveDir).createSwerveDrive(maximumSpeed, startingPose);
         } catch (Exception e)
         {
             throw new RuntimeException(e);
         }
 
         // Configure Swerve Drive
-        swerveDrive.setHeadingCorrection(true); // Turn on to correct heading
-        swerveDrive.angularVelocityCorrection = true;
-        swerveDrive.autonomousAngularVelocityCorrection = true;
+    swerveDrive.setHeadingCorrection(true); // Turn on to correct heading
+    // Disable low-level angular velocity correction flags so we don't attempt IMU-based
+    // compensation when an IMU isn't present in simulation. Use setAngularVelocityCompensation
+    // to enable with proper parameters and a valid IMU.
+    swerveDrive.angularVelocityCorrection = false;
+    swerveDrive.autonomousAngularVelocityCorrection = true;
         swerveDrive.setCosineCompensator(false); // Turn on to automatically slow or speed up swerve modules that should be close to their desired state in theory
             // Disable angular velocity compensation when IMU may be unavailable in simulation to avoid NPEs.
             // If you have a working IMU in sim/hardware, set this to true and tune the parameters.
