@@ -43,7 +43,7 @@ public class RobotContainer {
 
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
-  private final PhotonSubsystem m_photonSubsystem = new PhotonSubsystem(m_swerveSubsystem); // name from PhotonVision/config
+  private final PhotonSubsystem m_photonSubsystem = new PhotonSubsystem(); // name from PhotonVision/config
   // Pathplanner testing
   private final AutoPlans m_autoPlans;
   private final SendableChooser<Command> autoChooser;

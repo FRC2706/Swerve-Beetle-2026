@@ -4,23 +4,23 @@
 
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.Units.Value;
+//import static edu.wpi.first.units.Units.Value;
 
 import java.util.Optional;
 
 // Imports
 import org.photonvision.PhotonCamera;
-import org.photonvision.PhotonUtils;
+//import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
-import frc.robot.subsystems.SwerveSubsystem;
+//import frc.robot.subsystems.SwerveSubsystem;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.geometry.Pose2d;
+//import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
+//import edu.wpi.first.math.geometry.Rotation2d;
+//import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
  
@@ -33,13 +33,13 @@ public class PhotonSubsystem extends SubsystemBase {
     public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
     private static final double kCameraHeight = 0.44; // assigns camera height in meters
     private static final double kTargetHeight = 1.22; // assigns target height in meters // TODO: change this so it changes based on APrilTag ID
-    private static double kCameraPitch = Math.PI/6; // TODO: decide on the final camera pitch, current angle is a guesstimate (30 degrees but in radians)
-    private static double kTargetPitch = Math.PI/2; // assigns target angle in radians
-    private final SwerveSubsystem m_SwerveSubsystem;
+    private static double kCameraPitch = 30; // assigns camera angle in radians
+    //private static double kTargetPitch = Math.PI/2; // assigns target angle in radians
+    //private final SwerveSubsystem m_SwerveSubsystem;
     private double m_planarDistance;            
-    public PhotonSubsystem(SwerveSubsystem swerveSubsystem) { //private? or public?
+    public PhotonSubsystem() { //private? or public?
         camera1 = new PhotonCamera("Arducam"); //make sure this name matches the camera name in photonvision interface
-        m_SwerveSubsystem = swerveSubsystem;
+        //m_SwerveSubsystem = swerveSubsystem;
     }
 
     @Override
@@ -80,7 +80,7 @@ public class PhotonSubsystem extends SubsystemBase {
             return;
         }
         Pose3d tagPose3d = tagPoseOpt.get();
-        Pose2d fieldTagPose2d = tagPose3d.toPose2d();
+        /*Pose2d fieldTagPose2d = tagPose3d.toPose2d();
 
         // Camera->target transform observed by PhotonVision
         Transform3d camToTarget3d = cameraToTarget();
@@ -96,7 +96,8 @@ public class PhotonSubsystem extends SubsystemBase {
         // Estimate robot pose on the field using known tag pose and observed camera->target
         // Use the tag pose's actual Z value for the target height and a zero target pitch
         // (tags are vertical; use 0 radians for pitch unless you have a different tag orientation).
-        Pose2d robotPose = PhotonUtils.estimateFieldToRobot(
+        
+        /*Pose2d robotPose = PhotonUtils.estimateFieldToRobot(
             kCameraHeight,
             tagPose3d.getZ(), // use actual tag height from the field layout
             kCameraPitch,
@@ -108,14 +109,13 @@ public class PhotonSubsystem extends SubsystemBase {
 
         // Explicit planar distance (robot XY to tag XY)
        double dx = robotPose.getX() - fieldTagPose2d.getX();
-       double dy = robotPose.getY() - fieldTagPose2d.getY();
+       double dy = robotPose.getY() - fieldTagPose2d.getY();*/
        
-        m_planarDistance = (kTargetHeight-kCameraHeight)/(Math.tan((Math.PI/180*getPitch())+(Math.PI/180*30)));
+        m_planarDistance = (kTargetHeight-kCameraHeight)/(Math.tan((Math.PI/180*getPitch())+(Math.PI/180*kCameraPitch)));
         // Slant distance using camera and tag heights
-        double heightDiff = kCameraHeight - tagPose3d.getZ();
-        double slantDistance = Math.hypot(m_planarDistance, heightDiff);
-
-        //System.out.println("Planar distance (robot to tag, field XY) [m]: " + planarDistance);
+        //double heightDiff = kCameraHeight - tagPose3d.getZ();
+        //double slantDistance = Math.hypot(m_planarDistance, heightDiff);
+        //System.out.println("Planar distance (robot to tag, field XY) [m]: " + m_planarDistance);
         //System.out.println("Slant distance (approx, includes height difference) [m]: " + slantDistance);
     }
 
