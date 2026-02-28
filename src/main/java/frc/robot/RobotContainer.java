@@ -75,7 +75,6 @@ public class RobotContainer {
     m_swerveSubsystem.setupPathPlanner();
 
     // Now that AutoBuilder is configured, create autos and the chooser
-    m_autoPlans = new AutoPlans();
     autoChooser = AutoBuilder.buildAutoChooser("Drive Forward Auto");
     SmartDashboard.putData("Auto Mode", autoChooser);
 
@@ -113,7 +112,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // Return the command selected on the SendableChooser (built by AutoBuilder).
     Command selected = autoChooser.getSelected();
-    Command selected = autoChooser.getSelected();
+    
 
     //If the chooser has no selection, fall back to the AutoPlans default.
     if (selected != null) {
